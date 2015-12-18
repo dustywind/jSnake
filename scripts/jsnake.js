@@ -1,8 +1,3 @@
-/**
- *	Written by Nguyen, Dustin
- *	Feel free to use the code
-*/
-
 var Snake = null;
 
 $(function() {
@@ -28,8 +23,8 @@ $(function() {
 		var loop = null;
 		var paused = false;
 
-        // UPDATE --> speed in milliseconds
-		var UPDATE = 150;
+        // movementspeed of snake = 1 Tile per $(speed) milliseconds
+        var speed = 250;
 
 		var snake = [];
 		var apple = null;
@@ -229,12 +224,16 @@ $(function() {
 			}
 		};
 
-		this.init = function(xp, yp, gamefieldp) {
+		this.init = function(xp, yp, gamefieldp, userDefinedSpeed) {
+
 			x = xp;
 			y = yp;
 			gamefield = $('#' + gamefieldp);
-
 			gamefield.css('display', 'block');
+
+            if(typeof userDefinedSpeed !== 'undefined'){
+                speed = userDefinedSpeed;
+            }
 
 			// create the field
 			field = new Array(x);
@@ -262,7 +261,7 @@ $(function() {
 			apple = spawnApple();
 
 			// set a timer, which calls continuously a function
-			loop = setInterval(mainloop, UPDATE);
+			loop = setInterval(mainloop, speed);
 			
 			// set a listener, to get the keyboard input
 			$(document).keydown(function(keydownEvent) {
@@ -274,7 +273,7 @@ $(function() {
 				if( CONTROL.isControl(key) ) {
 					if(paused) {
 						paused = false;
-						loop = setInterval(mainloop, UPDATE);
+						loop = setInterval(mainloop, speed);
 					}
 					else {
 						paused = true;
